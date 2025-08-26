@@ -18,22 +18,16 @@ RUN a2enmod rewrite \
     && a2enconf servername \
     && sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
 
-# Copiar composer.json y composer.lock primero para cache de build
-COPY composer.json composer.lock /var/www/html/
-WORKDIR /var/www/html
-
-# Asegurar permisos
-RUN chown -R www-data:www-data /var/www/html
-
-# Instalar dependencias de Composer
-RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --optimize-autoloader --ignore-platform-reqs
-
-# Copiar resto del proyecto
+# Copiar todo el proyecto
 COPY . /var/www/html
+WORKDIR /var/www/html
 
 # Permisos correctos para Laravel
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Instalar dependencias de Composer
+RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 # Cache de Laravel para producción
 RUN php artisan config:cache \
