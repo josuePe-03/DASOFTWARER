@@ -6,6 +6,3 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: laravel_app
-    volumes:
-      - .:/var/www/html
-    command: bash -c "composer install && apache2-foreground"
