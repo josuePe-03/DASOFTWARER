@@ -1,38 +1,75 @@
-# Usar PHP 8.3 con Apache
+# -----------------------------
+# Dockerfile para Laravel en Railway
+# -----------------------------
+
+# Base PHP con Apache
 FROM php:8.3-apache
 
-# Habilitar mod_rewrite de Apache
-RUN a2enmod rewrite
-
-# Instalar extensiones necesarias para Laravel
+# -----------------------------
+# Instalar extensiones necesarias
+# -----------------------------
 RUN apt-get update && apt-get install -y \
-    libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev libxpm-dev libzip-dev zip unzip git curl \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    libxpm-dev \
+    libzip-dev \
+    zip unzip git curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm \
     && docker-php-ext-install gd pdo pdo_mysql zip
 
-# Instalar Composer globalmente
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer
+# -----------------------------
+# Instalar Composer
+# -----------------------------
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer
 
-# Cambiar DocumentRoot de Apache a /public
-RUN sed -i 's#/var/www/html#/var/www/html/public#g' /etc/apache2/sites-available/000-default.conf \
-    && sed -i 's#/var/www/html#/var/www/html/public#g' /etc/apache2/apache2.conf
+# -----------------------------
+# Configurar Apache
+# -----------------------------
+RUN a2enmod rewrite
 
-# Permitir .htaccess
-RUN sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
+# Evitar warning de ServerName
+RUN echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
+    && a2enconf servername
 
+# -----------------------------
 # Copiar proyecto
+# -----------------------------
 COPY . /var/www/html
 
-# Establecer el directorio de trabajo
 WORKDIR /var/www/html
 
-# Instalar dependencias de Composer
-RUN composer install
-
-# Permisos correctos
+# -----------------------------
+# Permisos correctos para Laravel
+# -----------------------------
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+# -----------------------------
+# Instalar dependencias de Laravel
+# -----------------------------
+RUN composer install --no-dev --optimize-autoloader
+
+# -----------------------------
+# Cache de Laravel para producción
+# -----------------------------
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
+# -----------------------------
+# Opcache para PHP (acelerar Laravel)
+# -----------------------------
+RUN docker-php-ext-enable opcache
+
+# -----------------------------
 # Exponer puerto 80
+# -----------------------------
 EXPOSE 80
+
+# -----------------------------
+# Ejecutar Apache en primer plano
+# -----------------------------
+CMD ["apache2-foreground"]
