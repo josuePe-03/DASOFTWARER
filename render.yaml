@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: laravel-app
+    env: php
+    region: oregon       # Puedes cambiar a 'oregon', 'oregon', 'frankfurt', etc.
+    plan: starter        # Plan gratuito; cambia según necesidad
+    buildCommand: |
+      composer install --optimize-autoloader --no-dev
+      php artisan key:generate
+      php artisan migrate --force
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: 'false'
+      - key: APP_KEY
+        fromDatabase: false
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromDatabase: laravel-db
+      - key: DB_PORT
+        value: '3306'
+      - key: DB_DATABASE
+        fromDatabase: laravel-db
+      - key: DB_USERNAME
+        fromDatabase: laravel-db
+      - key: DB_PASSWORD
+        fromDatabase: laravel-db
+
+databases:
+  - name: laravel-db
+    engine: mysql
+    version: 8
+    plan: starter
+    region: oregon
+    # Para Render, el usuario, password y DB name se generan automáticamente y se conectan via envVars

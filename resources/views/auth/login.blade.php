@@ -2,44 +2,46 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <h2 class="text-3xl font-bold text-center mb-6">Iniciar Sesión</h2>
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="mb-4">
+            <x-input-label for="email" :value="__('Email')" class="text-white" />
+            <x-text-input id="email" 
+                          class="block mt-1 w-full rounded-lg bg-white/20 text-white placeholder-gray-200 focus:border-white focus:ring focus:ring-white/50" 
+                          type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-200" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="mb-4">
+            <x-input-label for="password" :value="__('Password')" class="text-white" />
+            <x-text-input id="password" 
+                          class="block mt-1 w-full rounded-lg bg-white/20 text-white placeholder-gray-200 focus:border-white focus:ring focus:ring-white/50" 
+                          type="password" name="password" required autocomplete="current-password" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-200" />
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+        <div class="flex items-center mb-4">
+            <label for="remember_me" class="inline-flex items-center text-white">
+                <input id="remember_me" type="checkbox" class="rounded border-white text-white shadow-sm focus:ring-white" name="remember">
+                <span class="ml-2 text-sm">{{ __('Remember me') }}</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-between mt-6">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                <a class="underline text-sm text-white hover:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white" 
+                   href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-primary-button class="ml-3 bg-white/30 hover:bg-white/50 text-blue-700 font-semibold rounded-xl px-6 py-2 transition ease-in-out duration-200">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
