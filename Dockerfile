@@ -27,8 +27,8 @@ COPY . /var/www/html
 # Establecer el directorio de trabajo
 WORKDIR /var/www/html
 
-# Instalar dependencias de Composer
-RUN composer install --no-interaction --no-scripts --no-autoloader
+# Ejecutar Composer install
+RUN composer install
 
 # Permisos correctos
 RUN chown -R www-data:www-data /var/www/html \
