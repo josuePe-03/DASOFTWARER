@@ -1,5 +1,5 @@
 # -----------------------------
-# Dockerfile para Laravel en Railway
+# Dockerfile Laravel Production Railway
 # -----------------------------
 
 # Base PHP con Apache
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd pdo pdo_mysql zip
 
 # -----------------------------
-# Instalar Composer
+# Instalar Composer global
 # -----------------------------
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
@@ -30,15 +30,20 @@ RUN curl -sS https://getcomposer.org/installer | php \
 # -----------------------------
 RUN a2enmod rewrite
 
+# Cambiar DocumentRoot a /public
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+
 # Evitar warning de ServerName
 RUN echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
     && a2enconf servername
+
+# Permitir .htaccess
+RUN sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
 
 # -----------------------------
 # Copiar proyecto
 # -----------------------------
 COPY . /var/www/html
-
 WORKDIR /var/www/html
 
 # -----------------------------
@@ -60,7 +65,7 @@ RUN php artisan config:cache \
     && php artisan view:cache
 
 # -----------------------------
-# Opcache para PHP (acelerar Laravel)
+# Opcache para PHP
 # -----------------------------
 RUN docker-php-ext-enable opcache
 
