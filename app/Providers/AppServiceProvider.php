@@ -9,11 +9,9 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function boot(): void
+    public function register(): void
     {
-        if (config('app.env') === 'production') {
-            URL::forceScheme('https');
-        }
+        //
     }
 
     /**
