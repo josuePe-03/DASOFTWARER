@@ -31,8 +31,11 @@ WORKDIR /var/www/html
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Instalar dependencias de Composer
-RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+# Instalar dependencias sin optimización
+RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --ignore-platform-reqs
+
+# Luego optimizar autoload
+RUN php /usr/local/bin/composer dump-autoload --optimize
 
 # Instalar dependencias de Node y compilar assets
 RUN npm install && npm run build
