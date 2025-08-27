@@ -4,13 +4,12 @@ FROM php:8.3-apache
 # Instalar extensiones necesarias para Laravel
 RUN apt-get update && apt-get install -y \
     libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev libxpm-dev \
-    libzip-dev zip unzip git curl \
+    libzip-dev zip unzip git curl libonig-dev libxml2-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm \
-    && docker-php-ext-install gd pdo pdo_mysql zip bcmath
+    && docker-php-ext-install gd pdo pdo_mysql zip bcmath exif xml fileinfo pcntl
 
 # Instalar Composer globalmente
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
     # Instalar Node.js y npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -31,11 +30,8 @@ WORKDIR /var/www/html
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Instalar dependencias sin optimización
-RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --ignore-platform-reqs
-
-# Luego optimizar autoload
-RUN php /usr/local/bin/composer dump-autoload --optimize
+RUN composer install --no-dev --ignore-platform-reqs --prefer-dist
+RUN composer dump-autoload --optimize
 
 # Instalar dependencias de Node y compilar assets
 RUN npm install && npm run build
