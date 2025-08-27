@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
+# Instalar dependencias de Node y compilar assets
+RUN npm install && npm run build
+
 # Configurar Apache (public como raíz de Laravel)
 RUN a2enmod rewrite \
     && sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
