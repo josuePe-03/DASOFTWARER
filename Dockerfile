@@ -12,8 +12,9 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
-# Instalar dependencias de Node y compilar assets
-RUN npm install && npm run build
+    # Instalar Node.js y npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 # Configurar Apache (public como raíz de Laravel)
 RUN a2enmod rewrite \
@@ -32,6 +33,9 @@ RUN chown -R www-data:www-data /var/www/html \
 
 # Instalar dependencias de Composer
 RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+
+# Instalar dependencias de Node y compilar assets
+RUN npm install && npm run build
 
 # Exponer puerto 80
 EXPOSE 80
