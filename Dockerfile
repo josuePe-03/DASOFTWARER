@@ -18,6 +18,9 @@ RUN a2enmod rewrite \
     && a2enconf servername \
     && sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
 
+# Habilitar errores de PHP para debug (temporal)
+RUN echo "display_errors=On" >> /usr/local/etc/php/conf.d/docker-php-errors.ini
+
 # Copiar todo el proyecto
 COPY . /var/www/html
 WORKDIR /var/www/html
@@ -29,14 +32,13 @@ RUN chown -R www-data:www-data /var/www/html \
 # Instalar dependencias de Composer
 RUN php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
-# Cache de Laravel para producción
+# Limpiar y cachear Laravel
 RUN php artisan config:clear \
     && php artisan route:clear \
     && php artisan view:clear \
     && php artisan config:cache \
     && php artisan route:cache \
-    && php artisan view:cache \
-    && php artisan migrate --force
+    && php artisan view:cache
 
 # Exponer puerto 80
 EXPOSE 80
