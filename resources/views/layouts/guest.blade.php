@@ -19,7 +19,7 @@
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-10">
         <div>
             <a href="/">
-                <x-application-logo class="w-24 h-24 text-white" />
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Altamar" width="100">
             </a>
         </div>
 

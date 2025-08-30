@@ -26,12 +26,13 @@
         </div>
 
         <!-- Remember Me -->
-        <div class="flex items-center mb-4">
-            <label for="remember_me" class="inline-flex items-center text-white">
-                <input id="remember_me" type="checkbox" class="rounded border-white text-white shadow-sm focus:ring-white" name="remember">
-                <span class="ml-2 text-sm">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+<div class="flex items-center mb-4">
+    <label for="remember_me" class="inline-flex items-center text-white">
+        <input id="remember_me" type="checkbox" class="rounded border-white text-blue-500 shadow-sm focus:ring-blue-500" name="remember">
+        <span class="ml-2 text-sm">{{ __('Remember me') }}</span>
+    </label>
+</div>
+
 
         <div class="flex items-center justify-between mt-6">
             @if (Route::has('password.request'))
