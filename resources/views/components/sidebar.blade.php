@@ -9,6 +9,23 @@
                 @endif
 
                 @if (auth()->user()->tienePerfil('Administrador'))
+
+                    {{-- Dropdown Configuracion --}}
+                    <div x-data="{ configuracionOpen: {{ request()->is('email_settings*')  ? 'true' : 'false' }} }">
+                        <button @click="configuracionOpen = !configuracionOpen" 
+                                class="w-full text-left px-3 py-2 rounded hover:bg-white/20 flex justify-between items-center transition">
+                            <span>Configuracion</span>
+                            <svg :class="{ 'rotate-180': configuracionOpen }" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <div x-show="configuracionOpen" x-transition class="mt-1 space-y-1 pl-4">
+                            <a href="/email_settings" 
+                               class="block px-3 py-2 rounded hover:bg-white/20 transition {{ request()->is('email_settings*') ? 'bg-white/30' : '' }}">Configuracion Correos</a>
+                           </div>
+                    </div>
+
                     {{-- Dropdown Usuarios --}}
                     <div x-data="{ usuariosOpen: {{ request()->is('usuarios*') || request()->is('perfiles*') || request()->is('permisos*') ? 'true' : 'false' }} }">
                         <button @click="usuariosOpen = !usuariosOpen" 

@@ -5,6 +5,7 @@ use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\EmailSettingController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,9 @@ Route::middleware(['auth'])->group(function () {
     ]);
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('clientes', ClienteController::class);
+    Route::resource('email_settings', EmailSettingController::class);
+    Route::post('email-settings/test', [EmailSettingController::class, 'sendTest'])->name('email_settings.sendTest');
+
 });
 
 Route::get('/dashboard', function () {
