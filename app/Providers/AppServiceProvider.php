@@ -36,11 +36,6 @@ class AppServiceProvider extends ServiceProvider
                 'mail.from.name' => $setting->from_name,
             ]);
 
-            // Setear la API Key de Resend en tiempo de ejecución
-            putenv("RESEND_API_KEY={$setting->api_key}");
-            $_ENV['RESEND_API_KEY'] = $setting->api_key;
-            $_SERVER['RESEND_API_KEY'] = $setting->api_key;
-
             // Cambiar el mailer por default a 'resend'
             config(['mail.default' => 'resend']);
         }
