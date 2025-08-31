@@ -9,10 +9,9 @@ class EmailService
 {
     protected $config;
 
-    public function __construct($mailer = 'resend')
+    public function __construct($mailer = null)
     {
-        // Tomamos la configuración guardada para Resend
-        $this->config = EmailSetting::where('mailer', $mailer)->first();
+        $this->config = EmailSetting::where('mailer', $mailer ?? 'resend')->first();
     }
 
     public function send($to, $mailable)
@@ -21,11 +20,9 @@ class EmailService
             throw new \Exception("No hay configuración de correo para este mailer.");
         }
 
-        // Configuración temporal para Resend
         config([
-            'mail.default' => 'dynamic',
             'mail.mailers.dynamic' => [
-                'transport' => 'resend',
+                'transport' => $this->config->mailer,
                 'api_key' => $this->config->api_key,
             ],
             'mail.from.address' => $this->config->from_address,
