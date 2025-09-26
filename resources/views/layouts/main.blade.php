@@ -7,10 +7,10 @@
 
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@yield('title', config('app.name', 'Laravel'))</title>
+    <title>@yield('title', config('app.name', 'D&A Software R'))</title>
     <meta
       name="description"
-      content="Altamar Comunicación y Desarrollo: Creamos sitios web profesionales y hacemos crecer tu negocio con marketing digital."
+      content="DaSoftware: Desarrollo de software, sitios web y apps a medida. Creamos soluciones tecnológicas innovadoras, escalables y optimizadas para SEO en Google."
     />
 
     <!-- Fonts -->
@@ -51,7 +51,7 @@
               >A</span
             >
             <span class="font-extrabold text-lg tracking-tight"
-              >Altamar Comunicación</span
+              >D&A Software R</span
             >
           </a>
           <nav class="hidden md:flex items-center gap-6 font-medium">
@@ -86,29 +86,39 @@
     </main>
 
     <!-- Footer -->
-    <!-- Footer -->
-    <footer class="border-t border-slate-200">
-      <div class="container mx-auto px-4">
-        <div
-          class="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 text-sm text-slate-600"
-        >
-          <div class="flex items-center gap-2">
-            <span
-              class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-brand-600 text-white font-bold"
-              >A</span
-            >
-            <span
-              >© <span id="year"></span> Altamar Comunicación y Desarrollo.
-              Todos los derechos reservados.</span
-            >
-          </div>
-          <div class="flex items-center gap-4">
-            <a href="#servicios" class="hover:text-brand-600">Servicios</a>
-            <a href="#portafolio" class="hover:text-brand-600">Portafolio</a>
-            <a href="#contacto" class="hover:text-brand-600">Contacto</a>
-          </div>
+        <footer class="border-t border-slate-200 py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
+            
+            <!-- Logo y descripción -->
+            <div>
+            <h3 class="text-2xl font-bold text-slate-600">D&A Software R</h3>
+            <p class="mt-4 text-sm text-slate-500">Laboratorio especializado en análisis clínicos, de agua y alimentos. Resultados confiables y precisos, avalados por certificaciones.</p>
+            </div>
+
+            <!-- Información de contacto -->
+            <div>
+            <h4 class="text-lg font-semibold text-slate-600 mb-4">Contacto</h4>
+            <p class="text-slate-600">📍 Cjon. Francisco X. Clavijero No. 234, Centro, 91700 Veracruz, Ver.</p>
+            <p class="text-slate-600">📞 (+52) 229-229-0382</p>
+            <p class="text-slate-600">✉️ rrodriguez@dasoftwarer.com</p>
+            <p class="text-slate-600 mt-2">🕒 Lunes a Viernes: 8:00 am - 6:00 pm</p>
+            </div>
+
+            <!-- Redes sociales -->
+            <div>
+            <h4 class="text-lg font-semibold text-slate-600 mb-4">Síguenos</h4>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-cyan-400 transition">Facebook</a>
+                <a href="#" class="hover:text-cyan-400 transition">Instagram</a>
+                <a href="#" class="hover:text-cyan-400 transition">LinkedIn</a>
+            </div>
+            </div>
         </div>
-      </div>
+
+        <!-- Copy -->
+        <div class="text-center text-slate-600 text-sm mt-10 border-t border-gray-300 pt-6">
+            © {{ date('Y') }} D&A Software R. Todos los derechos reservados.
+        </div>
     </footer>
 
     @stack('scripts')
